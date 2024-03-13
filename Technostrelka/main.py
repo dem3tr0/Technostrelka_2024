@@ -79,7 +79,6 @@ def mistakes(data):
             elif 25 <= j <= 30:
                 if not (data[i][j].isdigit() and 1.0 <= float(data[i][j]) <= 5.0):
                     mistakes_count += 1
-
             elif j == 31:
                 if not (type(data[i][j] == int)):
                     mistakes_count += 1
@@ -265,4 +264,90 @@ def amount_reasons(data):
         print("The main reason of choosing MS school is other")
 
 amount_reasons(data)
+_separation()
+
+# Задание 4
+def min_max_mark(data, G):
+    Gx = 0
+    if G == 1:
+        Gx = 33
+    elif G == 2:
+        Gx = 34
+    elif G == 3:
+        Gx = 35
+    math = []
+    por = []
+    for i in range(len(data)):
+        if data[i][1] == 'Math':
+            math.append(int(data[i][Gx]))
+        elif data[i][1] == 'Por':
+            por.append(int(data[i][Gx]))
+    return [min(math), max(math), min(por), max(por)]
+
+G = int(input('Введите номер семестра (G1, G2, G3): '))
+print("Наихудщая оценка по математике (Math): ", min_max_mark(data, G)[0], "наилучшая: ", min_max_mark(data, G)[1])
+print("Наихудщая оценка по природоведению (Por): ", min_max_mark(data, G)[2], "наилучшая: ", min_max_mark(data, G)[3])
+_separation()
+
+def avg_mark(data, G):
+    Gx = 0
+    if (G == 1):
+        Gx = 33
+    elif(G == 2):
+        Gx = 34
+    elif(G == 3):
+        Gx = 35
+    math = []
+    por = []
+
+    for i in range(len(data)):
+        if data[i][1] == 'Math':
+            math.append(int(data[i][Gx]))
+        elif data[i][1] == 'Por':
+            por.append(int(data[i][Gx]))
+    return [int(sum(math)/len(math)), int(sum(por)/len(por))]
+
+G = int(input('Введите номер семестра (G1, G2, G3): '))
+print("Средняя оценка по математике (Math): ", avg_mark(data, G)[0])
+print("Средняя оценка по природоведению (Por): ", avg_mark(data, G)[1])
+_separation()
+
+def count_grade_students(data, G):
+    Gx = 0
+    if G == 1:
+        Gx = 33
+    elif G == 2:
+        Gx = 34
+    elif G == 3:
+        Gx = 35
+
+    math_more_10 = 0
+    math_more_15 = 0
+    math_20 = 0
+    por_more_10 = 0
+    por_more_15 = 0
+    por_20 = 0
+
+    for i in range(1, len(data)):
+        grade = int(data[i][Gx])
+        if data[i][1] == 'Math':
+            if grade >= 20:
+                math_20 += 1
+            elif grade >= 15:
+                math_more_15 += 1
+            elif grade >= 10:
+                math_more_10 += 1
+        if data[i][1] == 'Por':
+            if grade >= 20:
+                por_20 += 1
+            elif grade >= 15:
+                por_more_15 += 1
+            elif grade >= 10:
+                por_more_10 += 1
+    math = [math_more_10, math_more_15, math_20]
+    por = [por_more_10, por_more_15, por_20]
+    return math, por
+
+G = int(input('Введите номер семестра (G1, G2, G3): '))
+print(count_grade_students(data, G))
 _separation()
