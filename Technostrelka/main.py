@@ -1,6 +1,6 @@
 import csv
 import numpy as np
-import matplotlib as plt
+import matplotlib.pyplot as plt
 with open("students_data.csv", "r") as main:
     data = []
     reader = csv.reader(main)
@@ -267,52 +267,7 @@ amount_reasons(data)
 _separation()
 
 # Задание 4
-def min_max_mark(data, G):
-    Gx = 0
-    if G == 1:
-        Gx = 33
-    elif G == 2:
-        Gx = 34
-    elif G == 3:
-        Gx = 35
-    math = []
-    por = []
-    for i in range(len(data)):
-        if data[i][1] == 'Math':
-            math.append(int(data[i][Gx]))
-        elif data[i][1] == 'Por':
-            por.append(int(data[i][Gx]))
-    return [min(math), max(math), min(por), max(por)]
-
-G = int(input('Введите номер семестра (G1, G2, G3): '))
-print("Наихудщая оценка по математике (Math): ", min_max_mark(data, G)[0], "наилучшая: ", min_max_mark(data, G)[1])
-print("Наихудщая оценка по природоведению (Por): ", min_max_mark(data, G)[2], "наилучшая: ", min_max_mark(data, G)[3])
-_separation()
-
-def avg_mark(data, G):
-    Gx = 0
-    if (G == 1):
-        Gx = 33
-    elif(G == 2):
-        Gx = 34
-    elif(G == 3):
-        Gx = 35
-    math = []
-    por = []
-
-    for i in range(len(data)):
-        if data[i][1] == 'Math':
-            math.append(int(data[i][Gx]))
-        elif data[i][1] == 'Por':
-            por.append(int(data[i][Gx]))
-    return [int(sum(math)/len(math)), int(sum(por)/len(por))]
-
-G = int(input('Введите номер семестра (G1, G2, G3): '))
-print("Средняя оценка по математике (Math): ", avg_mark(data, G)[0])
-print("Средняя оценка по природоведению (Por): ", avg_mark(data, G)[1])
-_separation()
-
-def count_grade_students(data, G):
+def min_max_avg_mark(data, G):
     Gx = 0
     if G == 1:
         Gx = 33
@@ -321,33 +276,54 @@ def count_grade_students(data, G):
     elif G == 3:
         Gx = 35
 
-    math_more_10 = 0
-    math_more_15 = 0
-    math_20 = 0
-    por_more_10 = 0
-    por_more_15 = 0
-    por_20 = 0
+    math_grades = []
+    por_grades = []
 
     for i in range(1, len(data)):
         grade = int(data[i][Gx])
         if data[i][1] == 'Math':
-            if grade >= 20:
-                math_20 += 1
-            elif grade >= 15:
-                math_more_15 += 1
-            elif grade >= 10:
-                math_more_10 += 1
-        if data[i][1] == 'Por':
-            if grade >= 20:
-                por_20 += 1
-            elif grade >= 15:
-                por_more_15 += 1
-            elif grade >= 10:
-                por_more_10 += 1
-    math = [math_more_10, math_more_15, math_20]
-    por = [por_more_10, por_more_15, por_20]
-    return math, por
+            math_grades.append(grade)
+        elif data[i][1] == 'Por':
+            por_grades.append(grade)
+
+    min_math = min(math_grades)
+    max_math = max(math_grades)
+    avg_math = int(sum(math_grades) / len(math_grades))
+
+    min_por = min(por_grades)
+    max_por = max(por_grades)
+    avg_por = int(sum(por_grades) / len(por_grades))
+
+    return min_math, max_math, avg_math, min_por, max_por, avg_por, math_grades, por_grades
+
 
 G = int(input('Введите номер семестра (G1, G2, G3): '))
-print(count_grade_students(data, G))
-_separation()
+min_math, max_math, avg_math, min_por, max_por, avg_por, math_grades, por_grades = min_max_avg_mark(data, G)
+
+# Построение графиков с границами для столбцов
+fig, axs = plt.subplots(2, 2, figsize=(16, 12))
+
+# График минимальных и максимальных оценок
+axs[0, 0].bar(['Min Math', 'Max Math', 'Min Por', 'Max Por'], [min_math, max_math, min_por, max_por], edgecolor='black')
+axs[0, 0].set_yticks(range(0, 21))
+axs[0, 0].set_title('Минимальные и максимальные оценки')
+
+# График средних оценок
+axs[0, 1].bar(['Средняя Math', 'Средняя Por'], [avg_math, avg_por], edgecolor='black')
+axs[0, 1].set_yticks(range(0, 21))
+axs[0, 1].set_title('Средние оценки')
+
+# График всех оценок по математике
+axs[1, 0].hist(math_grades, bins=20, range=(0, 20), align='mid', edgecolor='black')
+axs[1, 0].set_title('Все оценки по математике')
+axs[1, 0].set_xticks(range(0, 21))
+axs[1, 0].set_yticks(range(0, 61, 10))
+
+# График всех оценок по природоведению
+axs[1, 1].hist(por_grades, bins=20, range=(0, 20), align='mid', edgecolor='black')
+axs[1, 1].set_title('Все оценки по природоведению')
+axs[1, 1].set_xticks(range(0, 21))
+axs[1, 1].set_yticks(range(0, 101, 10))
+
+plt.tight_layout()
+plt.show()
