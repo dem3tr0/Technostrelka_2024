@@ -8,7 +8,6 @@ with open("students_data.csv", "r") as main:
         data.append(row)
 
 # Словарь для более удобной работы, придумаете че с ним делать
-# main_dict = {0: 'ID', 1: 'Subject', 2: 'school', 3: 'sex', 4: 'age', 5: '', 6: '', 7: '', 8: ''}
 main_dict = {}
 names = [el for el in data[0][:]]
 for i in range(len(names)):
@@ -327,3 +326,46 @@ axs[1, 1].set_yticks(range(0, 101, 10))
 
 plt.tight_layout()
 plt.show()
+
+def g3_depend_on_sex(data):
+    fem_por = []
+    fem_math = []
+    male_por = []
+    male_math = []
+    for i in range(len(data)):
+        if data[i][1] == 'Por' and data[i][3] == 'F':
+            fem_por.append(data[i][3])
+        elif data[i][1] == 'Math' and data[i][3] == 'F':
+            fem_math.append(data[i][3])
+        elif data[i][1] == 'Por' and data[i][3] == 'M':
+            male_por.append(data[i][3])
+        elif data[i][1] == 'Math' and data[i][3] == 'M':
+            male_math.append(data[i][3])
+    avg_fem_por = sum(fem_por)/len(fem_por)
+    avg_fem_math = sum(fem_math)/len(fem_math)
+    avg_male_por = sum(male_por)/len(male_por)
+    avg_male_math = sum(male_por) / len(male_por)
+    return[avg_fem_por, avg_fem_math, avg_male_por, avg_male_math]
+
+print(g3_depend_on_sex(data))
+
+# Задание 9
+def G4 (data):
+    G4 = ['G4']
+    for i in range(1, len(data)):
+        grade = int(data[i][35])
+        if 18 <= grade <= 20:
+            G4.append('excellent')
+        elif 14 <= grade <= 17:
+            G4.append('good')
+        elif 8 <= grade <= 13:
+            G4.append('satisfactory')
+        elif grade < 8:
+            G4.append('unsatisfactory')
+    return G4
+
+for i in range(len(data)):
+    data[i].append(G4(data)[i])
+
+for i in range(len(data)):
+    print(*data[i])
