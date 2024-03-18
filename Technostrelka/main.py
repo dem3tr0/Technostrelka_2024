@@ -1,6 +1,7 @@
 import csv
 import numpy as np
 import matplotlib.pyplot as plt
+import pandas as pd
 with open("students_data.csv", "r") as main:
     data = []
     reader = csv.reader(main)
@@ -24,67 +25,69 @@ cat_features = ['Subject', 'School', 'sex', 'address', 'famsize', 'Pstatus', 'Me
 num_features = ['traveltime', 'studytime', 'failures', 'famrel', 'freetime', 'goout', 'Dalc', 'Walc', 'health', 'abscenes', 'G1', 'G2', 'G3', 'G4'] # G4 Задание 9
 
 # Задание 1.2 + 1.3
-def mistakes(data):
-    mistakes_count = 0
-    for i in range(1, len(data)):
-        for j in range(35):
-            if j == 0:
-                if len(list(data[i][j])) > 6:
-                    mistakes_count += 1
-            elif j == 1:
-                if data[i][j] != 'Math' or data[i][j] != 'Por':
-                    mistakes_count += 1
-            elif j == 2:
-                if data[i][j] not in ['GP', 'MS']:
-                    mistakes_count += 1
-            elif j == 3:
-                if data[i][j] not in ['F', 'M']:
-                    mistakes_count += 1
-            elif j == 4:
-                if not (10 < int(data[i][j]) < 40):
-                    mistakes_count += 1
-            elif j == 5:
-                if data[i][j] not in ['U', 'R']:
-                    mistakes_count += 1
-            elif j == 6:
-                if data[i][j] not in ['GT3', 'LE3']:
-                    mistakes_count += 1
-            elif j == 7:
-                if data[i][j] not in ['T', 'A']:
-                    mistakes_count += 1
-            elif j == 8 or j == 9:
-                if not (data[i][j].isdigit() and 0 <= int(data[i][j]) <= 4):
-                    mistakes_count += 1
-                elif type(data[i][j]) != int:
-                    mistakes_count += 1
-            elif j == 10 or j == 11:
-                if data[i][j] not in ['teacher', 'health', 'services', 'at_home', 'other']:
-                    mistakes_count += 1
-            elif j == 12:
-                if data[i][j] not in ['home', 'reputation', 'course', 'other']:
-                    mistakes_count += 1
-            elif j == 13:
-                if data[i][j] not in ['mother', 'father', 'other']:
-                    mistakes_count += 1
-            elif j == 14 or j == 15:
-                if not (1 <= int(data[i][j]) <= 4):
-                    mistakes_count += 1
-            elif 17 <= j <= 24:
-                if data[i][j] not in ['yes', 'no']:
-                    mistakes_count += 1
-            elif j == 32:
-                if data[i][j] not in ['yes', 'no']:
-                    mistakes_count += 1
-            elif 25 <= j <= 30:
-                if not (data[i][j].isdigit() and 1.0 <= float(data[i][j]) <= 5.0):
-                    mistakes_count += 1
-            elif j == 31:
-                if not (type(data[i][j] == int)):
-                    mistakes_count += 1
-    return f'Ошибки: {mistakes_count}'
+def mistakes():
+    df = pd.read_csv('students_data.csv')
+    count = 0
+    for i in range(1, 36):
+        column_name = str(main_dict[i])
+        column = df[column_name]
+        for j in range(len(column)):
+            if column_name == 'Subjects':
+                if column[j] not in ['Por', 'Math']:
+                    count += 1
+            elif column_name == 'school':
+                if column[j] not in ['GP', 'MS']:
+                    count += 1
+            if column_name == 'sex':
+                if column[j] != 'F' and column[j] != 'M':
+                    count += 1
+                    column[j].replace('m', 'M')
+            elif column_name == 'address':
+                if column[j] not in ['U', 'R']:
+                    count += 1
+            elif column_name == 'famsize':
+                if column[j] not in ['GT3', 'LE3']:
+                    count += 1
+            elif column_name == 'Pstatus':
+                if column[j] not in ['T', 'A']:
+                    count += 1
+                    column[j].replace('t', 'T')
+            elif column_name in ['Fedu', 'Medu']:
+                if column[j].isdigit():
+                    if int(column[j]) > 4 or int(column[j]) < 0:
+                        count += 1
+                else:
+                    count += 1
+                    column[j].replace('o', '0')
+            elif column_name in ['Mjob', 'Fjob']:
+                if column[j] not in ['services', 'other', 'at_home', 'teacher', 'health']:
+                    count += 1
+                    column[j].replace('at-home', 'at_home')
+            elif column_name == 'reason':
+                if column[j] not in ['home', 'reputation', 'course', 'other']:
+                    count += 1
+            elif column_name == 'guardian':
+                if column[j] not in ['father', 'mother', 'other']:
+                    count += 1
+                    column[j].replace('futher', 'father')
+            elif column_name in ['traveltime', 'studytime']:
+                int(column[j])
+                if column[j] > 4 or column[j] < 1:
+                    count += 1
+            elif column_name in ['romantic', 'schoolsup', 'famsup', 'paid', 'activities', 'nursery', 'higher', 'internet', 'cheating']:
+                if column[j] not in ['yes', 'no']: # пропуски не учитываются за ошибки
+                    count += 1
+            elif column_name in ['famrel', 'freetime', 'goout', 'Dalc', 'Walc', 'health']:
+                if 1 > float(column[j]) > 5 or pd.isnull(column[j]):
+                    count += 1
+            elif column_name in ['G1', 'G2', 'G3']:
+                if not (0 <= int(column[j]) <= 20):
+                    count += 1
+    data = df.values.tolist()
+    return count
 
-print(mistakes(data))
-_separation()
+for i in range(len(data)):
+    print(*data[i])
 
 # Задание 2.1
 def misses(data):
@@ -96,8 +99,14 @@ def misses(data):
                 res += 1
                 keys.add(main_dict[j])
     keys_str = ', '.join(sorted(keys))
-    return f'Пропусков {res} в таких параметрах как: {keys_str}'
-print(misses(data))
+    result_string = f'Пропусков {res} в таких параметрах как: {keys_str}'
+    return res, keys_str, result_string
+res, keys_str, result_string = misses(data)
+
+print('Ошибок и опечаток в таблице: ', mistakes() - res)
+_separation()
+
+print(result_string)
 _separation()
 
 # Задание 3.1
@@ -327,28 +336,6 @@ axs[1, 1].set_yticks(range(0, 101, 10))
 plt.tight_layout()
 plt.show()
 
-def g3_depend_on_sex(data):
-    fem_por = []
-    fem_math = []
-    male_por = []
-    male_math = []
-    for i in range(len(data)):
-        if data[i][1] == 'Por' and data[i][3] == 'F':
-            fem_por.append(data[i][3])
-        elif data[i][1] == 'Math' and data[i][3] == 'F':
-            fem_math.append(data[i][3])
-        elif data[i][1] == 'Por' and data[i][3] == 'M':
-            male_por.append(data[i][3])
-        elif data[i][1] == 'Math' and data[i][3] == 'M':
-            male_math.append(data[i][3])
-    avg_fem_por = sum(fem_por)/len(fem_por)
-    avg_fem_math = sum(fem_math)/len(fem_math)
-    avg_male_por = sum(male_por)/len(male_por)
-    avg_male_math = sum(male_por) / len(male_por)
-    return[avg_fem_por, avg_fem_math, avg_male_por, avg_male_math]
-
-print(g3_depend_on_sex(data))
-
 # Задание 9
 def G4 (data):
     G4 = ['G4']
@@ -369,3 +356,13 @@ for i in range(len(data)):
 
 for i in range(len(data)):
     print(*data[i])
+_separation()
+# task 8.1
+def both_subjects(data):
+    num_people = 0
+    sliced_data = [row[3:12] + [row[13]] + row[20:26] + row[27:30] for row in data[1:]]
+    for i in range(len(sliced_data)):
+        print(*sliced_data[i])
+    return num_people
+print(both_subjects(data))
+_separation()
