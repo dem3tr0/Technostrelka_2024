@@ -1,5 +1,4 @@
 import csv
-import numpy as np
 import matplotlib.pyplot as plt
 import pandas as pd
 with open("students_data.csv", "r") as main:
@@ -86,9 +85,6 @@ def mistakes():
     data = df.values.tolist()
     return count
 
-for i in range(len(data)):
-    print(*data[i])
-
 # Задание 2.1
 def misses(data):
     res = 0
@@ -108,10 +104,6 @@ _separation()
 
 print(result_string)
 _separation()
-
-# Задание 3.1
-
-
 
 # Задание 3.2
 def count_schools(data):
@@ -336,6 +328,73 @@ axs[1, 1].set_yticks(range(0, 101, 10))
 plt.tight_layout()
 plt.show()
 
+# Задание 6.1
+def correction(data):
+    for i in range(len(data)):
+        if data[i][28] == '':
+            data[i][28] = 1.0 # Берем за минимальное, т. к. никаким другим образом мы определить не можем
+        if data[i][29] == '':
+            data[i][29] = 1.0 # Берем за минимальное, т. к. никаким другим образом мы определить не можем
+        if data[i][24] == '':
+            data[i][24] = 'no'
+        if data[i][32] == '':
+            data[i][32] = 'no'
+        if data[i][25] == '':
+            data[i][25] = 1.0
+correction(data)
+def time_on_street(data):
+    sliced_data = [[row[3]]+row[28:30] for row in data[1:]]
+    man_time = 0
+    fem_time = 0
+    for i in range(len(sliced_data)):
+        for j in range(len(sliced_data[i])):
+            if sliced_data[i][0] == "M":
+                man_time += float(sliced_data[i][1]) + float(sliced_data[i][2])
+            elif sliced_data[i][0] == "F":
+                fem_time += float(sliced_data[i][1]) + float(sliced_data[i][2])
+    if man_time > fem_time:
+       print("Мальчики проводят времени на улице больше чем девочки")
+    elif man_time < fem_time:
+       print("Девочки проводят времени на улице больше чем мальчики")
+    elif man_time == fem_time:
+       print("Мальчики и девочки проводят одиннаковое количество времени на улице")
+time_on_street(data)
+_separation()
+
+# Задание 8.1 + 8.2
+def both_subjects(data):
+    num_people = 0
+    subject = [row[1] for row in data[1:]]
+    sliced_data = [row[3:12] + [row[13]] + row[20:26] + row[27:31] for row in data[1:]]
+    marks = [[row[1]] + [row[35]] for row in data[1:]] # Сравниваем итоговые оценки
+    mark_math = 0
+    mark_por = 0
+    mark_equals = 0
+    for i in range(len(sliced_data)):
+        for j in range(i+1, len(sliced_data)):
+            if sliced_data[i] == sliced_data[j] and subject[i] != subject[j]:
+                if marks[i][0] == "Por":
+                    if marks[i][1] > marks[j][1]:
+                        mark_por += 1
+                    elif marks[i][1] < marks[j][1]:
+                        mark_math += 1
+                    elif marks[i][1] == marks[j][1]:
+                        mark_equals +=1
+                elif marks[i][0] == "Math":
+                    if marks[i][1] > marks[j][1]:
+                        mark_math += 1
+                    elif marks[i][1] < marks[j][1]:
+                        mark_por += 1
+                    elif marks[i][1] == marks[j][1]:
+                        mark_equals += 1
+                num_people += 1
+    print(f"Количество людей, учащихся по обоим предметам: {num_people}")
+    print(f"Количество людей, у которых оценка по математике лучше, чем оценка по природоведению: {mark_math}")
+    print(f"Количество людей, у которых оценка по природоведению лучше, чем оценка по математике: {mark_por}")
+    print(f"Количество людей, которые имеют одинаковые оценки по обоим предмета {mark_equals}")
+both_subjects(data)
+_separation()
+
 # Задание 9
 def G4 (data):
     G4 = ['G4']
@@ -354,15 +413,6 @@ def G4 (data):
 for i in range(len(data)):
     data[i].append(G4(data)[i])
 
-for i in range(len(data)):
-    print(*data[i])
-_separation()
-# task 8.1
-def both_subjects(data):
-    num_people = 0
-    sliced_data = [row[3:12] + [row[13]] + row[20:26] + row[27:30] for row in data[1:]]
-    for i in range(len(sliced_data)):
-        print(*sliced_data[i])
-    return num_people
-print(both_subjects(data))
-_separation()
+with open("corrected_students_data.csv", 'w', newline='') as my_csv: # Запись исправленной (не польностью) матрицы
+    csvWriter = csv.writer(my_csv, delimiter=',')
+    csvWriter.writerows(data)
