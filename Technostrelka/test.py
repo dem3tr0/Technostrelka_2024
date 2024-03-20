@@ -1,99 +1,104 @@
-import numpy as np
+import pandas as pd
 import csv
-import matplotlib.pyplot as plt
-
-# Исходный двумерный массив
-data = [
-    [1, 2, 3],
-    [4, 5, 6],
-    [7, 8, 9],
-]
-
-# Дополнительная колонка для добавления
-new_column = [10, 20, 30]
-
-# Добавление новой колонки в каждую строку массива
-for i in range(len(data)):
-    data[i].append(new_column[i])
-
-# Вывод результата
-for row in data:
-    print(row)
 
 with open("students_data.csv", "r") as main:
-    list = []
+    data = []
     reader = csv.reader(main)
     for row in reader:
-        list.append(row)
+        data.append(row)
 
-def statistics(data):
-    res = []
-    for i in range(1, 35):
-        sliced_data = np.array(data[:, i])
-        if sliced_data.dtype.type == np.int64:
-            res.append(np.mean(sliced_data))
-    return res
 
-print(statistics(data))
+main_dict = {}
+names = [el for el in data[0][:]]
+for i in range(len(names)):
+    main_dict.update({i: str(names[i])})
 
-# Задание 4
-def min_max_avg_mark(data, G):
-    Gx = 0
-    if G == 1:
-        Gx = 33
-    elif G == 2:
-        Gx = 34
-    elif G == 3:
-        Gx = 35
+def mistakes():
+    df = pd.read_csv('students_data.csv')
+    count = 0
+    print(df)
+    for i in range(1, 36):
+        column_name = str(main_dict[i])
+        column = df[column_name]
+        column.mask(column.eq('')).dropna()
+        print(column_name)
+        for j in range(len(column)):
+            if column_name == 'Subjects':
+                if column[j] not in ['Por', 'Math']:
+                    count += 1
+                    print(column[j])
+            elif column_name == 'school':
+                if column[j] not in ['GP', 'MS']:
+                    count += 1
+                    print(column[j])
+            if column_name == 'sex':
+                if column[j] != 'F' and column[j] != 'M':
+                    count += 1
+                    column[j].replace('m', 'M')
+                    print(column[j])
+            elif column_name == 'address':
+                if column[j] not in ['U', 'R']:
+                    print(column[j])
+                    count += 1
+            elif column_name == 'famsize':
+                if column[j] not in ['GT3', 'LE3']:
+                    count += 1
+                    print(column[j])
+            elif column_name == 'Pstatus':
+                if column[j] not in ['T', 'A']:
+                    count += 1
+                    column[j].replace('t', 'T')
+                    print(column[j])
+            elif column_name in ['Fedu', 'Medu']:
+                if column[j].isdigit():
+                    if int(column[j]) > 4 or int(column[j]) < 0:
+                        count += 1
+                        print(column[j])
+                else:
+                    count += 1
+                    column[j].replace('o', '0')
+                    print(column[j])
+            elif column_name in ['Mjob', 'Fjob']:
+                if column[j] not in ['services', 'other', 'at_home', 'teacher', 'health']:
+                    count += 1
+                    column[j].replace('at-home', 'at_home')
+                    print(column[j])
+            elif column_name == 'reason':
+                if column[j] not in ['home', 'reputation', 'course', 'other']:
+                    count += 1
+                    print(column[j])
+            elif column_name == 'guardian':
+                if column[j] not in ['father', 'mother', 'other']:
+                    count += 1
+                    column[j].replace('futher', 'father')
+                    print(column[j])
+            elif column_name in ['traveltime', 'studytime']:
+                int(column[j])
+                if column[j] > 4 or column[j] < 1:
+                    count += 1
+                    print(column[j])
+            elif column_name in ['romantic', 'schoolsup', 'famsup', 'paid', 'activities', 'nursery', 'higher', 'internet', 'cheating']:
+                if column[j] not in ['yes', 'no']: # пропуски не учитываются за ошибки
+                    count += 1
+                    print(column[j])
 
-    math_grades = []
-    por_grades = []
+    data = df.values.tolist()
+    return count
 
+print(mistakes())
+
+# Задание 2.1
+def misses(data):
+    res = 0
+    keys = set()
     for i in range(1, len(data)):
-        grade = int(data[i][Gx])
-        if data[i][1] == 'Math':
-            math_grades.append(grade)
-        elif data[i][1] == 'Por':
-            por_grades.append(grade)
+        for j in range(0, 35):
+            if data[i][j] == '':
+                res += 1
+                keys.add(main_dict[j])
+    keys_str = ', '.join(sorted(keys))
+    result_string = f'Пропусков {res} в таких параметрах как: {keys_str}'
+    return res, keys_str, result_string
+res, keys_str, result_string = misses(data)
 
-    min_math = min(math_grades)
-    max_math = max(math_grades)
-    avg_math = int(sum(math_grades) / len(math_grades))
-
-    min_por = min(por_grades)
-    max_por = max(por_grades)
-    avg_por = int(sum(por_grades) / len(por_grades))
-
-    return min_math, max_math, avg_math, min_por, max_por, avg_por, math_grades, por_grades
-
-
-G = int(input('Введите номер семестра (G1, G2, G3): '))
-min_math, max_math, avg_math, min_por, max_por, avg_por, math_grades, por_grades = min_max_avg_mark(data, G)
-
-# Построение графиков с границами для столбцов
-fig, axs = plt.subplots(2, 2, figsize=(16, 12))
-
-# График минимальных и максимальных оценок
-axs[0, 0].bar(['Min Math', 'Max Math', 'Min Por', 'Max Por'], [min_math, max_math, min_por, max_por], edgecolor='black')
-axs[0, 0].set_yticks(range(0, 21))
-axs[0, 0].set_title('Минимальные и максимальные оценки')
-
-# График средних оценок
-axs[0, 1].bar(['Средняя Math', 'Средняя Por'], [avg_math, avg_por], edgecolor='black')
-axs[0, 1].set_yticks(range(0, 21))
-axs[0, 1].set_title('Средние оценки')
-
-# График всех оценок по математике
-axs[1, 0].hist(math_grades, bins=20, range=(0, 20), align='mid', edgecolor='black')
-axs[1, 0].set_title('Все оценки по математике')
-axs[1, 0].set_xticks(range(0, 21))
-axs[1, 0].set_yticks(range(0, 61, 10))
-
-# График всех оценок по природоведению
-axs[1, 1].hist(por_grades, bins=20, range=(0, 20), align='mid', edgecolor='black')
-axs[1, 1].set_title('Все оценки по природоведению')
-axs[1, 1].set_xticks(range(0, 21))
-axs[1, 1].set_yticks(range(0, 101, 10))
-
-plt.tight_layout()
-plt.show()
+print('Ошибок и опечаток в таблице: ', mistakes() - res)

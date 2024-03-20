@@ -105,6 +105,20 @@ _separation()
 print(result_string)
 _separation()
 
+def correction(data):
+    for i in range(len(data)):
+        if data[i][28] == '':
+            data[i][28] = 1.0 # Берем за минимальное, т. к. никаким другим образом мы определить не можем
+        if data[i][29] == '':
+            data[i][29] = 1.0 # Берем за минимальное, т. к. никаким другим образом мы определить не можем
+        if data[i][24] == '':
+            data[i][24] = 'no'
+        if data[i][32] == '':
+            data[i][32] = 'no'
+        if data[i][25] == '':
+            data[i][25] = 1.0
+correction(data)
+
 # Задание 3.2
 def count_schools(data):
     GP = 0
@@ -187,28 +201,28 @@ def amount_studytime(data):
                 Por_4 += 1
 
     if Por_1 > Por_2 and Por_1 > Por_3 and Por_1 > Por_4:
-        print("amount_studytime Por: < 2 hours")
+        print("Среднее количество затрачиваемого времени на учебу по природоведению: < 2 hours")
 
     elif Por_2 > Por_3 and Por_1 < Por_2 and Por_2 > Por_4:
-        print("amount_studytime Por: 2 - 5 hours")
+        print("Среднее количество затрачиваемого времени на учебу по природоведению: 2 - 5 hours")
 
     elif Por_3 > Por_2 and Por_1 < Por_3 and Por_3 > Por_4:
-        print("amount_studytime Por: 5 - 10 hours")
+        print("Среднее количество затрачиваемого времени на учебу по природоведению: 5 - 10 hours")
 
     elif Por_4 > Por_2 and Por_4 > Por_3 and Por_1 < Por_4:
-        print("amount_studytime Por: > 10 hours")
+        print("Среднее количество затрачиваемого времени на учебу по природоведению: > 10 hours")
 
     if Math_1 > Math_2 and Math_1 > Math_3 and Math_1 > Math_4:
-        print("amount_studytime Math: < 2 hours")
+        print("Среднее количество затрачиваемого времени на учебу по математике: < 2 hours")
 
     elif Math_1 < Math_2 and Math_2 > Math_3 and Math_2 > Math_4:
-        print("amount_studytime Math: 2 - 5 hours")
+        print("Среднее количество затрачиваемого времени на учебу по математике: 2 - 5 hours")
 
     elif Math_3 > Math_2 and Math_1 < Math_3 and Math_3 > Math_4:
-        print("amount_studytime Math: 5 - 10 hours")
+        print("Среднее количество затрачиваемого времени на учебу по математике: 5 - 10 hours")
 
     elif Math_4 > Math_2 and Math_4 > Math_3 and Math_1 < Math_4:
-        print("amount_studytime Math: > 10 hours")
+        print("Среднее количество затрачиваемого времени на учебу по математике: > 10 hours")
 
 amount_studytime(data)
 _separation()
@@ -246,22 +260,22 @@ def amount_reasons(data):
                 other_MS += 1
 
     if home_GP > reputation_GP and home_GP > course_GP and home_GP > other_GP:
-        print("The main reason of choosing GP school is home")
+        print("Главной причиной выбора государственной школы (GP) стало расположение рядом с домом (home)")
     elif home_GP < reputation_GP and reputation_GP > course_GP and reputation_GP > other_GP:
-        print("The main reason of choosing GP school is reputation")
+        print("Главной причиной выбора государственной школы (GP) стала репутация школы (reputation)")
     elif course_GP > reputation_GP and home_GP < course_GP and course_GP > other_GP:
-        print("The main reason of choosing GP school is course")
+        print("Главной причиной выбора государственной школы (GP) стали преподаваемые предметы (course)")
     elif other_GP > reputation_GP and other_GP > course_GP and home_GP < other_GP:
-        print("The main reason of choosing GP school is other")
+        print("Главной причиной выбора государственной школы (GP) стали иные причины (other)")
 
     if home_MS > reputation_MS and home_MS > course_MS and home_MS > other_MS:
-        print("The main reason of choosing MS school is home")
+        print("Главной причиной выбора частной школы (MS) стало расположение рядом с домом (home)")
     elif home_MS < reputation_MS and reputation_MS > course_MS and reputation_MS > other_MS:
-        print("The main reason of choosing MS school is reputation")
+        print("Главной причиной выбора частной школы (MS) стала репутация школы (reputation)")
     elif course_MS > reputation_MS and home_MS < course_MS and course_MS > other_MS:
-        print("The main reason of choosing MS school is course")
+        print("Главной причиной выбора частной школы (MS) стали преподаваемые предметы (course)")
     elif other_MS > reputation_MS and other_MS > course_MS and home_MS < other_MS:
-        print("The main reason of choosing MS school is other")
+        print("Главной причиной выбора частной школы (MS) стали иные причины (other)")
 
 amount_reasons(data)
 _separation()
@@ -327,21 +341,8 @@ axs[1, 1].set_yticks(range(0, 101, 10))
 
 plt.tight_layout()
 plt.show()
-
+_separation()
 # Задание 6.1
-def correction(data):
-    for i in range(len(data)):
-        if data[i][28] == '':
-            data[i][28] = 1.0 # Берем за минимальное, т. к. никаким другим образом мы определить не можем
-        if data[i][29] == '':
-            data[i][29] = 1.0 # Берем за минимальное, т. к. никаким другим образом мы определить не можем
-        if data[i][24] == '':
-            data[i][24] = 'no'
-        if data[i][32] == '':
-            data[i][32] = 'no'
-        if data[i][25] == '':
-            data[i][25] = 1.0
-correction(data)
 def time_on_street(data):
     sliced_data = [[row[3]]+row[28:30] for row in data[1:]]
     man_time = 0
@@ -359,6 +360,145 @@ def time_on_street(data):
     elif man_time == fem_time:
        print("Мальчики и девочки проводят одиннаковое количество времени на улице")
 time_on_street(data)
+_separation()
+
+# Задание 7
+def depend_on_sex(data):
+    male = []
+    fem = []
+    for i in range(len(data)):
+        if data[i][3] == 'M':
+            male.append(int(data[i][35]))
+        elif data[i][3] == 'F':
+            fem.append(int(data[i][35]))
+    avg_male = sum(male)/len(male)
+    avg_fem = sum(fem)/len(fem)
+    return [avg_fem, avg_male]
+print(depend_on_sex(data))
+
+def depend_on_traveltime(data):
+    time_1 = []
+    time_2 = []
+    time_3 = []
+    time_4 = []
+    for i in range(len(data)):
+        if data[i][14] == '1':
+            time_1.append(int(data[i][35]))
+        elif data[i][14] == '2':
+            time_2.append(int(data[i][35]))
+        elif data[i][14] == '3':
+            time_3.append(int(data[i][35]))
+        elif data[i][14] == '4':
+            time_4.append(int(data[i][35]))
+    avg_time_1 = sum(time_1)/len(time_1)
+    avg_time_2 = sum(time_2)/len(time_2)
+    avg_time_3 = sum(time_3)/len(time_3)
+    avg_time_4 = sum(time_4)/len(time_4)
+    return [avg_time_1, avg_time_2, avg_time_2, avg_time_3, avg_time_4]
+print(depend_on_traveltime(data))
+
+def depend_on_famsup(data):
+    famsup_yes = []
+    famsup_no = []
+    for i in range(1, len(data)):
+        if data[i][18] == 'yes':
+            famsup_yes.append(int(data[i][35]))
+        elif data[i][18] == 'no':
+            famsup_no.append(int(data[i][35]))
+    avg_famsup_yes = sum(famsup_yes)/len(famsup_yes)
+    avg_famsup_no = sum(famsup_no)/len(famsup_no)
+    return[avg_famsup_yes, avg_famsup_no]
+print(depend_on_famsup(data))
+
+
+def depend_on_schoolsup(data):
+    schoolsup_yes = []
+    schoolsup_no = []
+    for i in range(1, len(data)):
+        if data[i][17] == 'yes':
+            schoolsup_yes.append(int(data[i][35]))
+        elif data[i][17] == 'no':
+            schoolsup_no.append(int(data[i][35]))
+    avg_schoolsup_yes = sum(schoolsup_yes)/len(schoolsup_yes)
+    avg_schoolsup_no = sum(schoolsup_no)/len(schoolsup_no)
+    return [avg_schoolsup_yes, avg_schoolsup_no]
+print(depend_on_schoolsup(data))
+
+def depend_on_paid(data):
+    paid_yes = []
+    paid_no = []
+    for i in range(1, len(data)):
+        if data[i][19] == 'yes':
+            paid_yes.append(int(data[i][35]))
+        elif data[i][19] == 'no':
+            paid_no.append(int(data[i][35]))
+    avg_paid_yes = sum(paid_yes)/len(paid_yes)
+    avg_paid_no = sum(paid_no)/len(paid_no)
+    return [avg_paid_yes, avg_paid_no]
+print(depend_on_paid(data))
+
+def depend_on_internet(data):
+    internet_yes = []
+    internet_no = []
+    for i in range(1, len(data)):
+        if data[i][23] == 'yes':
+            internet_yes.append(int(data[i][35]))
+        elif data[i][23] == 'no':
+            internet_no.append(int(data[i][35]))
+    avg_internet_yes = sum(internet_yes)/len(internet_yes)
+    avg_internet_no = sum(internet_no)/len(internet_no)
+    return [avg_internet_yes, avg_internet_no]
+print(depend_on_internet(data))
+
+def depend_on_Dalc(data):
+    dalc_1 = []
+    dalc_2 = []
+    dalc_3 = []
+    dalc_4 = []
+    dalc_5 = []
+    for i in range(1, len(data)):
+        if data[i][28] == '1.0':
+            dalc_1.append(int(data[i][35]))
+        elif data[i][28] == '2.0':
+            dalc_2.append(int(data[i][35]))
+        elif data[i][28] == '3.0':
+            dalc_3.append(int(data[i][35]))
+        elif data[i][28] == '4.0':
+            dalc_4.append(int(data[i][35]))
+        elif data[i][28] == '5.0':
+            dalc_5.append(int(data[i][35]))
+    avg_dalc_1 = sum(dalc_1)/len(dalc_1)
+    avg_dalc_2 = sum(dalc_2)/len(dalc_2)
+    avg_dalc_3 = sum(dalc_3)/len(dalc_3)
+    avg_dalc_4 = sum(dalc_4)/len(dalc_4)
+    avg_dalc_5 = sum(dalc_5)/len(dalc_5)
+    return [avg_dalc_1, avg_dalc_2, avg_dalc_3, avg_dalc_4, avg_dalc_5]
+print(depend_on_Dalc(data))
+
+def depend_on_Walc(data):
+    walc_1 = []
+    walc_2 = []
+    walc_3 = []
+    walc_4 = []
+    walc_5 = []
+    for i in range(1, len(data)):
+        if data[i][28] == '1.0':
+            walc_1.append(int(data[i][35]))
+        elif data[i][28] == '2.0':
+            walc_2.append(int(data[i][35]))
+        elif data[i][28] == '3.0':
+            walc_3.append(int(data[i][35]))
+        elif data[i][28] == '4.0':
+            walc_4.append(int(data[i][35]))
+        elif data[i][28] == '5.0':
+            walc_5.append(int(data[i][35]))
+    avg_walc_1 = sum(walc_1)/len(walc_1)
+    avg_walc_2 = sum(walc_2)/len(walc_2)
+    avg_walc_3 = sum(walc_3)/len(walc_3)
+    avg_walc_4 = sum(walc_4)/len(walc_4)
+    avg_walc_5 = sum(walc_5)/len(walc_5)
+    return [avg_walc_1, avg_walc_2, avg_walc_3, avg_walc_4, avg_walc_5]
+print(depend_on_Walc(data))
 _separation()
 
 # Задание 8.1 + 8.2
