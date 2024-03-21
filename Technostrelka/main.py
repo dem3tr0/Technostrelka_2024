@@ -311,37 +311,38 @@ def min_max_avg_mark(data, G):
     return min_math, max_math, avg_math, min_por, max_por, avg_por, math_grades, por_grades
 
 
-G = int(input('Введите номер семестра (G1, G2, G3): '))
-min_math, max_math, avg_math, min_por, max_por, avg_por, math_grades, por_grades = min_max_avg_mark(data, G)
-
-# Построение графиков с границами для столбцов
-fig, axs = plt.subplots(2, 2, figsize=(16, 12))
-
-# График минимальных и максимальных оценок
-axs[0, 0].bar(['Min Math', 'Max Math', 'Min Por', 'Max Por'], [min_math, max_math, min_por, max_por], edgecolor='black')
-axs[0, 0].set_yticks(range(0, 21))
-axs[0, 0].set_title('Минимальные и максимальные оценки')
-
-# График средних оценок
-axs[0, 1].bar(['Средняя Math', 'Средняя Por'], [avg_math, avg_por], edgecolor='black')
-axs[0, 1].set_yticks(range(0, 21))
-axs[0, 1].set_title('Средние оценки')
-
-# График всех оценок по математике
-axs[1, 0].hist(math_grades, bins=20, range=(0, 20), align='mid', edgecolor='black')
-axs[1, 0].set_title('Все оценки по математике')
-axs[1, 0].set_xticks(range(0, 21))
-axs[1, 0].set_yticks(range(0, 61, 10))
-
-# График всех оценок по природоведению
-axs[1, 1].hist(por_grades, bins=20, range=(0, 20), align='mid', edgecolor='black')
-axs[1, 1].set_title('Все оценки по природоведению')
-axs[1, 1].set_xticks(range(0, 21))
-axs[1, 1].set_yticks(range(0, 101, 10))
+# G = int(input('Введите номер семестра (G1, G2, G3): '))
+# min_math, max_math, avg_math, min_por, max_por, avg_por, math_grades, por_grades = min_max_avg_mark(data, G)
+#
+# # Построение графиков с границами для столбцов
+# fig, axs = plt.subplots(2, 2, figsize=(16, 12))
+#
+# # График минимальных и максимальных оценок
+# axs[0, 0].bar(['Min Math', 'Max Math', 'Min Por', 'Max Por'], [min_math, max_math, min_por, max_por], edgecolor='black')
+# axs[0, 0].set_yticks(range(0, 21))
+# axs[0, 0].set_title('Минимальные и максимальные оценки')
+#
+# # График средних оценок
+# axs[0, 1].bar(['Средняя Math', 'Средняя Por'], [avg_math, avg_por], edgecolor='black')
+# axs[0, 1].set_yticks(range(0, 21))
+# axs[0, 1].set_title('Средние оценки')
+#
+# # График всех оценок по математике
+# axs[1, 0].hist(math_grades, bins=20, range=(0, 20), align='mid', edgecolor='black')
+# axs[1, 0].set_title('Все оценки по математике')
+# axs[1, 0].set_xticks(range(0, 21))
+# axs[1, 0].set_yticks(range(0, 61, 10))
+#
+# # График всех оценок по природоведению
+# axs[1, 1].hist(por_grades, bins=20, range=(0, 20), align='mid', edgecolor='black')
+# axs[1, 1].set_title('Все оценки по природоведению')
+# axs[1, 1].set_xticks(range(0, 21))
+# axs[1, 1].set_yticks(range(0, 101, 10))
 
 plt.tight_layout()
 plt.show()
 _separation()
+
 # Задание 6.1
 def time_on_street(data):
     sliced_data = [[row[3]]+row[28:30] for row in data[1:]]
@@ -361,6 +362,19 @@ def time_on_street(data):
        print("Мальчики и девочки проводят одиннаковое количество времени на улице")
 time_on_street(data)
 _separation()
+
+# Задание 6.3
+def zavisimost():
+    df = pd.read_csv('corrected_students_data.csv')
+    wd = df[['Walc', 'address']]
+    walc_sum = wd['Walc'].sum()
+    for i in range(len(wd)):
+        if wd['address'][i] == 'R':
+            continue
+        a = [wd['address'][i], wd['Walc'][i]]
+        print(a)
+    print(walc_sum)
+zavisimost()
 
 # Задание 7
 def depend_on_sex(data):
@@ -407,7 +421,7 @@ def depend_on_famsup(data):
             famsup_no.append(int(data[i][35]))
     avg_famsup_yes = sum(famsup_yes)/len(famsup_yes)
     avg_famsup_no = sum(famsup_no)/len(famsup_no)
-    return[avg_famsup_yes, avg_famsup_no]
+    return [avg_famsup_yes, avg_famsup_no]
 print(depend_on_famsup(data))
 
 
@@ -549,9 +563,42 @@ def G4 (data):
         elif grade < 8:
             G4.append('unsatisfactory')
     return G4
-
 for i in range(len(data)):
     data[i].append(G4(data)[i])
+
+# Задание 10
+def G3_dif(data):
+     G3_dif = ['G3_dif']
+     sliced_data = [[row[16]] + row[31:33] + [row[35]] for row in data[1:]]
+     for i in range(len(sliced_data)):
+         if sliced_data[i][2] == 'yes':
+             sliced_data[i][2] = 5.0
+         else:
+             sliced_data[i][2] = 0.0
+         G3_dif.append(float(sliced_data[i][3]) - float(sliced_data[i][0]) - sliced_data[i][2] - (float(sliced_data[i][1]) * 0.25))
+     for j in range(1, len(G3_dif)):
+         if G3_dif[j] < 0:
+             G3_dif[j] = 0
+     return G3_dif
+for i in range(len(data)):
+    data[i].append(G3_dif(data)[i])
+
+# Задание 9
+def G4_dif (data):
+    G4_dif = ['G4_dif']
+    for i in range(1, len(data)):
+        grade = int(data[i][37])
+        if 18 <= grade <= 20:
+            G4_dif.append('excellent')
+        elif 14 <= grade <= 17:
+            G4_dif.append('good')
+        elif 8 <= grade <= 13:
+            G4_dif.append('satisfactory')
+        elif grade < 8:
+            G4_dif.append('unsatisfactory')
+    return G4_dif
+for i in range(len(data)):
+    data[i].append(G4_dif(data)[i])
 
 with open("corrected_students_data.csv", 'w', newline='') as my_csv: # Запись исправленной (не польностью) матрицы
     csvWriter = csv.writer(my_csv, delimiter=',')
