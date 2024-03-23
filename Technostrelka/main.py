@@ -23,7 +23,7 @@ cat_features = ['Subject', 'School', 'sex', 'address', 'famsize', 'Pstatus', 'Me
 # Числовые признаки
 num_features = ['traveltime', 'studytime', 'failures', 'famrel', 'freetime', 'goout', 'Dalc', 'Walc', 'health', 'abscenes', 'G1', 'G2', 'G3', 'G4'] # G4 Задание 9
 
-# Задание 1.2 + 1.3
+# "Задание 1.2 + 1.3
 def mistakes():
     df = pd.read_csv('students_data.csv')
     count = 0
@@ -141,7 +141,6 @@ def count_students(data):
             Por += 1
         elif data[i][1] == "Math":
             Math += 1
-
     return [Por, Math]
 print("Природоведение (Por): ", count_students(data)[0], "\nМатематика (Math): ", count_students(data)[1])
 _separation()
@@ -157,15 +156,12 @@ def amount_failures(data):
         elif data[i][1] == "Por":
             amount_math += int(data[i][16])
     print("Количество завалов по математике (Math): ", amount_math, "\nКоличество завалов по природоведению (Por): ", amount_por)
-
     if amount_por > amount_math:
         print('Природоведение заваливают чаще')
     elif amount_por < amount_math:
         print('Математику заваливают чаще')
-
     elif amount_por == amount_math:
         print("Оба предмета заваливают одинаково")
-
 amount_failures(data)
 _separation()
 
@@ -201,28 +197,28 @@ def amount_studytime(data):
                 Por_4 += 1
 
     if Por_1 > Por_2 and Por_1 > Por_3 and Por_1 > Por_4:
-        print("Среднее количество затрачиваемого времени на учебу по природоведению: < 2 hours")
+        print("Среднее количество затрачиваемого времени на учебу по природоведению: < 2 часов")
 
     elif Por_2 > Por_3 and Por_1 < Por_2 and Por_2 > Por_4:
-        print("Среднее количество затрачиваемого времени на учебу по природоведению: 2 - 5 hours")
+        print("Среднее количество затрачиваемого времени на учебу по природоведению: 2 - 5 часов")
 
     elif Por_3 > Por_2 and Por_1 < Por_3 and Por_3 > Por_4:
-        print("Среднее количество затрачиваемого времени на учебу по природоведению: 5 - 10 hours")
+        print("Среднее количество затрачиваемого времени на учебу по природоведению: 5 - 10 часов")
 
     elif Por_4 > Por_2 and Por_4 > Por_3 and Por_1 < Por_4:
-        print("Среднее количество затрачиваемого времени на учебу по природоведению: > 10 hours")
+        print("Среднее количество затрачиваемого времени на учебу по природоведению: > 10 часов")
 
     if Math_1 > Math_2 and Math_1 > Math_3 and Math_1 > Math_4:
-        print("Среднее количество затрачиваемого времени на учебу по математике: < 2 hours")
+        print("Среднее количество затрачиваемого времени на учебу по математике: < 2 часов")
 
     elif Math_1 < Math_2 and Math_2 > Math_3 and Math_2 > Math_4:
-        print("Среднее количество затрачиваемого времени на учебу по математике: 2 - 5 hours")
+        print("Среднее количество затрачиваемого времени на учебу по математике: 2 - 5 часов")
 
     elif Math_3 > Math_2 and Math_1 < Math_3 and Math_3 > Math_4:
-        print("Среднее количество затрачиваемого времени на учебу по математике: 5 - 10 hours")
+        print("Среднее количество затрачиваемого времени на учебу по математике: 5 - 10 часов")
 
     elif Math_4 > Math_2 and Math_4 > Math_3 and Math_1 < Math_4:
-        print("Среднее количество затрачиваемого времени на учебу по математике: > 10 hours")
+        print("Среднее количество затрачиваемого времени на учебу по математике: > 10 часов")
 
 amount_studytime(data)
 _separation()
@@ -311,33 +307,33 @@ def min_max_avg_mark(data, G):
     return min_math, max_math, avg_math, min_por, max_por, avg_por, math_grades, por_grades
 
 
-# G = int(input('Введите номер семестра (G1, G2, G3): '))
-# min_math, max_math, avg_math, min_por, max_por, avg_por, math_grades, por_grades = min_max_avg_mark(data, G)
-#
-# # Построение графиков с границами для столбцов
-# fig, axs = plt.subplots(2, 2, figsize=(16, 12))
-#
-# # График минимальных и максимальных оценок
-# axs[0, 0].bar(['Min Math', 'Max Math', 'Min Por', 'Max Por'], [min_math, max_math, min_por, max_por], edgecolor='black')
-# axs[0, 0].set_yticks(range(0, 21))
-# axs[0, 0].set_title('Минимальные и максимальные оценки')
-#
-# # График средних оценок
-# axs[0, 1].bar(['Средняя Math', 'Средняя Por'], [avg_math, avg_por], edgecolor='black')
-# axs[0, 1].set_yticks(range(0, 21))
-# axs[0, 1].set_title('Средние оценки')
-#
-# # График всех оценок по математике
-# axs[1, 0].hist(math_grades, bins=20, range=(0, 20), align='mid', edgecolor='black')
-# axs[1, 0].set_title('Все оценки по математике')
-# axs[1, 0].set_xticks(range(0, 21))
-# axs[1, 0].set_yticks(range(0, 61, 10))
-#
-# # График всех оценок по природоведению
-# axs[1, 1].hist(por_grades, bins=20, range=(0, 20), align='mid', edgecolor='black')
-# axs[1, 1].set_title('Все оценки по природоведению')
-# axs[1, 1].set_xticks(range(0, 21))
-# axs[1, 1].set_yticks(range(0, 101, 10))
+G = int(input('Введите номер семестра (G1, G2, G3): '))
+min_math, max_math, avg_math, min_por, max_por, avg_por, math_grades, por_grades = min_max_avg_mark(data, G)
+
+# Построение графиков с границами для столбцов
+fig, axs = plt.subplots(2, 2, figsize=(16, 12))
+
+# График минимальных и максимальных оценок
+axs[0, 0].bar(['Min Math', 'Max Math', 'Min Por', 'Max Por'], [min_math, max_math, min_por, max_por], edgecolor='black')
+axs[0, 0].set_yticks(range(0, 21))
+axs[0, 0].set_title('Минимальные и максимальные оценки')
+
+# График средних оценок
+axs[0, 1].bar(['Средняя Math', 'Средняя Por'], [avg_math, avg_por], edgecolor='black')
+axs[0, 1].set_yticks(range(0, 21))
+axs[0, 1].set_title('Средние оценки')
+
+# График всех оценок по математике
+axs[1, 0].hist(math_grades, bins=20, range=(0, 20), align='mid', edgecolor='black')
+axs[1, 0].set_title('Все оценки по математике')
+axs[1, 0].set_xticks(range(0, 21))
+axs[1, 0].set_yticks(range(0, 61, 10))
+
+# График всех оценок по природоведению
+axs[1, 1].hist(por_grades, bins=20, range=(0, 20), align='mid', edgecolor='black')
+axs[1, 1].set_title('Все оценки по природоведению')
+axs[1, 1].set_xticks(range(0, 21))
+axs[1, 1].set_yticks(range(0, 101, 10))
 
 plt.tight_layout()
 plt.show()
@@ -363,18 +359,69 @@ def time_on_street(data):
 time_on_street(data)
 _separation()
 
-# Задание 6.3
-def zavisimost():
+# Задание 6.2
+def zavisimost_address():
     df = pd.read_csv('corrected_students_data.csv')
-    wd = df[['Walc', 'address']]
-    walc_sum = wd['Walc'].sum()
-    for i in range(len(wd)):
-        if wd['address'][i] == 'R':
-            continue
-        a = [wd['address'][i], wd['Walc'][i]]
-        print(a)
-    print(walc_sum)
-zavisimost()
+    wd = df[['Walc', 'address', 'Dalc']]
+
+    time_sum1 = wd.loc[wd['address'] == 'U', ['Walc', 'Dalc']].sum()
+    time_sum2 = wd.loc[wd['address'] == 'R', ['Walc', 'Dalc']].sum()
+    if time_sum1.equals(time_sum2):
+        print('Время, проведенное на улице, не зависит от места проживания')
+    else:
+        print('Время, проведенное на улице, зависит от места проживания')
+zavisimost_address()
+_separation()
+def zavisimost_Pstatus():
+    df = pd.read_csv('corrected_students_data.csv')
+    wd = df[['Walc', 'Pstatus', 'Dalc']]
+
+    time_sum1 = wd.loc[wd['Pstatus'] == 'T', ['Walc', 'Dalc']].sum()
+    time_sum2 = wd.loc[wd['Pstatus'] == 'A', ['Walc', 'Dalc']].sum()
+
+    if time_sum1.equals(time_sum2):
+        print('Время, проведенное на улице, не зависит от отношений родителей')
+    else:
+        print('Время, проведенное на улице, зависит от отношений родителей')
+zavisimost_Pstatus()
+_separation()
+def zavisimost_higher():
+    df = pd.read_csv('corrected_students_data.csv')
+    wd = df[['Walc', 'higher', 'Dalc']]
+
+    time_sum1 = wd.loc[wd['higher'] == 'yes', ['Walc', 'Dalc']].sum()
+    time_sum2 = wd.loc[wd['higher'] == 'no', ['Walc', 'Dalc']].sum()
+
+    if time_sum1.equals(time_sum2):
+        print('Время, проведенное на улице, не зависит от желания получить высшее образование')
+    else:
+        print('Время, проведенное на улице, зависит от желания получить высшее образование')
+zavisimost_higher()
+_separation()
+def zavisimost_romantic():
+    df = pd.read_csv('corrected_students_data.csv')
+    wd = df[['Walc', 'romantic', 'Dalc']]
+
+    time_sum1 = wd.loc[wd['romantic'] == 'yes', ['Walc', 'Dalc']].sum()
+    time_sum2 = wd.loc[wd['romantic'] == 'no', ['Walc', 'Dalc']].sum()
+
+    if time_sum1.equals(time_sum2):
+        print('Время, проведенное на улице, не зависит от нахождения в романтических отношениях')
+    else:
+        print('Время, проведенное на улице, зависит от нахождения в романтических отношениях')
+zavisimost_romantic()
+_separation()
+
+def zavisimost_freetime():
+    df = pd.read_csv('corrected_students_data.csv')
+    wd = df[['Walc', 'freetime', 'Dalc']]
+    time_grouped = wd.groupby('freetime')[['Walc', 'Dalc']].sum()
+    if time_grouped['Walc'].nunique() == 1:
+        print('Время, проведенное на улице, не зависит от количество свободного времени')
+    else:
+        print('Время, проведенное на улице, зависит от количество свободного времени')
+zavisimost_freetime()
+_separation()
 
 # Задание 7
 def depend_on_sex(data):
@@ -387,7 +434,7 @@ def depend_on_sex(data):
             fem.append(int(data[i][35]))
     avg_male = sum(male)/len(male)
     avg_fem = sum(fem)/len(fem)
-    return [avg_fem, avg_male]
+    return [round(avg_fem, 2), round(avg_male, 2)]
 print(depend_on_sex(data))
 
 def depend_on_traveltime(data):
@@ -408,7 +455,7 @@ def depend_on_traveltime(data):
     avg_time_2 = sum(time_2)/len(time_2)
     avg_time_3 = sum(time_3)/len(time_3)
     avg_time_4 = sum(time_4)/len(time_4)
-    return [avg_time_1, avg_time_2, avg_time_2, avg_time_3, avg_time_4]
+    return [round(avg_time_1, 2), round(avg_time_2, 2), round(avg_time_3, 2), round(avg_time_4, 2)]
 print(depend_on_traveltime(data))
 
 def depend_on_famsup(data):
@@ -421,9 +468,8 @@ def depend_on_famsup(data):
             famsup_no.append(int(data[i][35]))
     avg_famsup_yes = sum(famsup_yes)/len(famsup_yes)
     avg_famsup_no = sum(famsup_no)/len(famsup_no)
-    return [avg_famsup_yes, avg_famsup_no]
+    return [round(avg_famsup_yes, 2), round(avg_famsup_no, 2)]
 print(depend_on_famsup(data))
-
 
 def depend_on_schoolsup(data):
     schoolsup_yes = []
@@ -435,7 +481,7 @@ def depend_on_schoolsup(data):
             schoolsup_no.append(int(data[i][35]))
     avg_schoolsup_yes = sum(schoolsup_yes)/len(schoolsup_yes)
     avg_schoolsup_no = sum(schoolsup_no)/len(schoolsup_no)
-    return [avg_schoolsup_yes, avg_schoolsup_no]
+    return [round(avg_schoolsup_yes, 2), round(avg_schoolsup_no, 2)]
 print(depend_on_schoolsup(data))
 
 def depend_on_paid(data):
@@ -448,7 +494,7 @@ def depend_on_paid(data):
             paid_no.append(int(data[i][35]))
     avg_paid_yes = sum(paid_yes)/len(paid_yes)
     avg_paid_no = sum(paid_no)/len(paid_no)
-    return [avg_paid_yes, avg_paid_no]
+    return [round(avg_paid_yes, 2), round(avg_paid_no, 2)]
 print(depend_on_paid(data))
 
 def depend_on_internet(data):
@@ -461,58 +507,49 @@ def depend_on_internet(data):
             internet_no.append(int(data[i][35]))
     avg_internet_yes = sum(internet_yes)/len(internet_yes)
     avg_internet_no = sum(internet_no)/len(internet_no)
-    return [avg_internet_yes, avg_internet_no]
+    return [round(avg_internet_yes, 2), round(avg_internet_no, 2)]
 print(depend_on_internet(data))
 
-def depend_on_Dalc(data):
-    dalc_1 = []
-    dalc_2 = []
-    dalc_3 = []
-    dalc_4 = []
-    dalc_5 = []
+def depend_on_Dalc_Walc(data):
+    dalcwalc_2 = []
+    dalcwalc_3 = []
+    dalcwalc_4 = []
+    dalcwalc_5 = []
+    dalcwalc_6 = []
+    dalcwalc_7 = []
+    dalcwalc_8 = []
+    dalcwalc_9 = []
+    dalcwalc_10 = []
     for i in range(1, len(data)):
-        if data[i][28] == '1.0':
-            dalc_1.append(int(data[i][35]))
-        elif data[i][28] == '2.0':
-            dalc_2.append(int(data[i][35]))
-        elif data[i][28] == '3.0':
-            dalc_3.append(int(data[i][35]))
-        elif data[i][28] == '4.0':
-            dalc_4.append(int(data[i][35]))
-        elif data[i][28] == '5.0':
-            dalc_5.append(int(data[i][35]))
-    avg_dalc_1 = sum(dalc_1)/len(dalc_1)
-    avg_dalc_2 = sum(dalc_2)/len(dalc_2)
-    avg_dalc_3 = sum(dalc_3)/len(dalc_3)
-    avg_dalc_4 = sum(dalc_4)/len(dalc_4)
-    avg_dalc_5 = sum(dalc_5)/len(dalc_5)
-    return [avg_dalc_1, avg_dalc_2, avg_dalc_3, avg_dalc_4, avg_dalc_5]
-print(depend_on_Dalc(data))
-
-def depend_on_Walc(data):
-    walc_1 = []
-    walc_2 = []
-    walc_3 = []
-    walc_4 = []
-    walc_5 = []
-    for i in range(1, len(data)):
-        if data[i][28] == '1.0':
-            walc_1.append(int(data[i][35]))
-        elif data[i][28] == '2.0':
-            walc_2.append(int(data[i][35]))
-        elif data[i][28] == '3.0':
-            walc_3.append(int(data[i][35]))
-        elif data[i][28] == '4.0':
-            walc_4.append(int(data[i][35]))
-        elif data[i][28] == '5.0':
-            walc_5.append(int(data[i][35]))
-    avg_walc_1 = sum(walc_1)/len(walc_1)
-    avg_walc_2 = sum(walc_2)/len(walc_2)
-    avg_walc_3 = sum(walc_3)/len(walc_3)
-    avg_walc_4 = sum(walc_4)/len(walc_4)
-    avg_walc_5 = sum(walc_5)/len(walc_5)
-    return [avg_walc_1, avg_walc_2, avg_walc_3, avg_walc_4, avg_walc_5]
-print(depend_on_Walc(data))
+        if float(data[i][28]) + float(data[i][29]) == 2.0:
+            dalcwalc_2.append(int(data[i][35]))
+        elif float(data[i][28]) + float(data[i][29]) == 3.0:
+            dalcwalc_3.append(int(data[i][35]))
+        elif float(data[i][28]) + float(data[i][29]) == 4.0:
+            dalcwalc_4.append(int(data[i][35]))
+        elif float(data[i][28]) + float(data[i][29]) == 5.0:
+            dalcwalc_5.append(int(data[i][35]))
+        elif float(data[i][28]) + float(data[i][29]) == 6.0:
+            dalcwalc_6.append(int(data[i][35]))
+        elif float(data[i][28]) + float(data[i][29]) == 7.0:
+            dalcwalc_7.append(int(data[i][35]))
+        elif float(data[i][28]) + float(data[i][29]) == 8.0:
+            dalcwalc_8.append(int(data[i][35]))
+        elif float(data[i][28]) + float(data[i][29]) == 9.0:
+            dalcwalc_9.append(int(data[i][35]))
+        elif float(data[i][28]) + float(data[i][29]) == 10.0:
+            dalcwalc_10.append(int(data[i][35]))
+    avg_dalcwalc_2 = sum(dalcwalc_2) / len(dalcwalc_2)
+    avg_dalcwalc_3 = sum(dalcwalc_3) / len(dalcwalc_3)
+    avg_dalcwalc_4 = sum(dalcwalc_4) / len(dalcwalc_4)
+    avg_dalcwalc_5 = sum(dalcwalc_5) / len(dalcwalc_5)
+    avg_dalcwalc_6 = sum(dalcwalc_6) / len(dalcwalc_6)
+    avg_dalcwalc_7 = sum(dalcwalc_7) / len(dalcwalc_7)
+    avg_dalcwalc_8 = sum(dalcwalc_8) / len(dalcwalc_8)
+    avg_dalcwalc_9 = sum(dalcwalc_9) / len(dalcwalc_9)
+    avg_dalcwalc_10 = sum(dalcwalc_10) / len(dalcwalc_10)
+    return [round(avg_dalcwalc_2, 2), round(avg_dalcwalc_3, 2), round(avg_dalcwalc_4, 2), round(avg_dalcwalc_5, 2), round(avg_dalcwalc_6, 2), round(avg_dalcwalc_7, 2), round(avg_dalcwalc_8, 2), round(avg_dalcwalc_9, 2), round(avg_dalcwalc_10, 2)]
+print(depend_on_Dalc_Walc(data))
 _separation()
 
 # Задание 8.1 + 8.2
@@ -583,7 +620,6 @@ def G3_dif(data):
 for i in range(len(data)):
     data[i].append(G3_dif(data)[i])
 
-# Задание 9
 def G4_dif (data):
     G4_dif = ['G4_dif']
     for i in range(1, len(data)):
